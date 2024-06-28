@@ -1,27 +1,30 @@
 body {
   margin: 0;
+  padding: 10px;
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.container {
-  margin: 10px auto;
-  width: 80%;
-  box-sizing: border-box;
+  min-width: 400px;
 }
 
 input {
-  padding: 5px 10px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
   border: 1px solid #5f9341;
+  margin-bottom: 4px;
 }
 
 button {
-  margin: 10px;
-  padding: 5px 20px;
+  background: #5f9341;
   color: white;
-  background-color: #5f9341;
+  padding: 10px 20px;
+  border: 1px solid #5f9341;
   font-weight: bold;
-  border: none;
-  cursor: pointer;
+  cursor: grab;
+}
+
+#delete-btn {
+  background: white;
+  color: #5f9341;
 }
 
 ul {
@@ -32,7 +35,6 @@ ul {
 
 li {
   margin-top: 5px;
-  text-align: left;
 }
 
 a {
