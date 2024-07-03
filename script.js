@@ -1,45 +1,40 @@
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {
+  getDatabase,
+  ref,
+  push,
+  onValue,
+  remove,
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+const firebaseConfig = {
+  databaseURL:
+    'https://leads-tracker-app-be763-default-rtdb.europe-west1.firebasedatabase.app/',
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const referenceInDB = ref(database, 'leads');
+
 const inputBtnEl = document.getElementById('input-btn');
 const inputEl = document.getElementById('input-el');
 const ulEl = document.getElementById('ul-el');
 const deleteBtnEl = document.getElementById('delete-btn');
-const tabBtn = document.getElementById('tab-btn');
 
-let myLeads = [];
-
-const leadsFromLocalStorage = JSON.parse(localStorage.getItem('myLeads'));
-if (leadsFromLocalStorage) {
-  myLeads = leadsFromLocalStorage;
-  render(myLeads);
-}
+onValue(referenceInDB, function (snapshot) {
+  const snapshotDoesExist = snapshot.exists();
+  if (snapshotDoesExist) {
+    const snapshotValues = snapshot.val();
+    const leads = Object.values(snapshotValues);
+    render(leads);
+  }
+});
 
 inputBtnEl.addEventListener('click', execute);
 deleteBtnEl.addEventListener('dblclick', clearAll);
-tabBtn.addEventListener('click', saveLog);
-
-function saveLog() {
-  chrome.tabs.query({
-    acive: true,
-    currentWindow: true,
-    function(tabs) {
-      myLeads.push(tabs[0].url);
-      localStorage.setItem('myLeads', JSON.stringify(myLeads));
-      render(myLeads);
-    },
-  });
-
-  myLeads.push(tabs[0].url);
-  localStorage.setItem('myLeads', JSON.stringify(myLeads));
-  render(myLeads);
-}
 
 function saveLead() {
-  myLeads.push(inputEl.value);
-}
-
-function storingLocal() {
-  // Save the myLeads array to localStorage
-  // PS: remember JSON.stringify()
-  localStorage.setItem('myLeads', JSON.stringify(myLeads));
+  push(referenceInDB, inputEl.value);
 }
 
 function render(leads) {
@@ -64,14 +59,12 @@ function clearInput() {
 }
 
 function clearAll() {
-  localStorage.clear();
-  myLeads = [];
-  render(myLeads);
+  remove(referenceInDB);
+  ulEl.innerHTML = '';
 }
 
 function execute() {
   saveLead();
   clearInput();
-  render(myLeads);
-  storingLocal();
+  // render(myLeads);
 }
