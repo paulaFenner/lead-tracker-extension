@@ -8,8 +8,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
 const firebaseConfig = {
-  databaseURL:
-    'https://leads-tracker-app-be763-default-rtdb.europe-west1.firebasedatabase.app/',
+  databaseURL: 'https://leads-tracker-app-be763-default-rtdb.europe-west1.firebasedatabase.app/',
 };
 
 const app = initializeApp(firebaseConfig);
